@@ -1,17 +1,36 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import router from "@/router/index";
+
+import auth from '@/store/modules/auth'
+import dogs from '@/store/modules/dogs'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {
+const store = new Vuex.Store({
+  modules: {
+    dogs, auth
   },
+  state: {
+    viewMod: ''
+  },
+
   getters: {
   },
-  mutations: {
-  },
+
   actions: {
+    changeView({ commit }, newView) {
+      const pathArr = newView.split('-')
+      router.push(pathArr[0]).catch (() => { });
+      commit("SET_VIEW_MOD", pathArr[1] || '');
+    }
   },
-  modules: {
+
+  mutations: {
+    SET_VIEW_MOD(state, newView) {
+      state.viewMod = newView;
+    },
   }
-})
+});
+
+export default store;
